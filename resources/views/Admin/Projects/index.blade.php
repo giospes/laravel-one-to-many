@@ -16,18 +16,22 @@
             </thead>
             <tbody>
                 @foreach ($projects as $project)
-                    <a href="{{route('admin.projects.show', $project->id)}}">
                         <tr>
-                            <td>{{ $project->id }}</td>
-                            <td>{{ $project->name }}</td>
-                            <td>{{ $project->description }}</td>
-                            <td>{{ $project->user_id }}</td>
-                            <td>{{ $project->created_at }}</td>
-                            <td>{{ $project->updated_at }}</td>
+                                <td>
+                                    <a href="{{ route('admin.projects.show', $project->id) }}">
+                                        {{ $project->id }}
+                                    </a>
+                                </td>
+                                <td>{{ $project->name }}</td>
+                                <td>{{ $project->description }}</td>
+                                <td>{{ $project->user_id }}</td>
+                                <td>{{ $project->created_at }}</td>
+                                <td>{{ $project->updated_at }}</td>
                         </tr>
-                    </a>
+                
                 @endforeach
             </tbody>
         </table>
+        <a href="{{route('admin.projects.create')}}" class="btn btn-primary">Create a New Project</a>
     </div>
 @endsection
