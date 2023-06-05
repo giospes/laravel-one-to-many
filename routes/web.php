@@ -36,8 +36,8 @@ Route::middleware(['auth', 'verified'])->name('admin.')->prefix('admin')->group(
     Route::prefix('projects')->name('projects.')->group(function (){
         Route::get('/', [ProjectsController::class, 'index'])->name('index');
         Route::get('/create', [ProjectsController::class, 'create'])->name('create');
-        Route::get('/{project}', [ProjectsController::class, 'show'])->name('show');
-        Route::get('/{project}/edit', [ProjectsController::class, 'edit'])->name('edit');
+        Route::get('/{slug}', [ProjectsController::class, 'show'])->name('show');
+        Route::get('/{slug}/edit', [ProjectsController::class, 'edit'])->name('edit');
         Route::post('/', [ProjectsController::class, 'store'])->name('store');
         Route::put('/{project}', [ProjectsController::class, 'update'])->name('update');
         Route::delete('/{project}', [ProjectsController::class, 'destroy'])->name('destroy');

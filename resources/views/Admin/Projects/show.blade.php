@@ -4,4 +4,4 @@
 <p>Created At: {{ $project->created_at }}</p>
 <p>Updated At: {{ $project->updated_at }}</p>
 
-<a href="{{route('admin.projects.edit', $project->id)}}" class="btn btn-warning">EDIT</a>
+<a href="{{route('admin.projects.edit', $project->slug)}}" class="btn btn-warning">EDIT</a>

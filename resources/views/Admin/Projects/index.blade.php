@@ -18,7 +18,7 @@
                 @foreach ($projects as $project)
                         <tr>
                                 <td>
-                                    <a href="{{ route('admin.projects.show', $project->id) }}">
+                                    <a href="{{ route('admin.projects.show', $project->slug) }}">
                                         {{ $project->id }}
                                     </a>
                                 </td>
@@ -33,5 +33,6 @@
             </tbody>
         </table>
         <a href="{{route('admin.projects.create')}}" class="btn btn-primary">Create a New Project</a>
+        {{$projects->links('vendor.pagination.bootstrap-5')}}
     </div>
 @endsection
