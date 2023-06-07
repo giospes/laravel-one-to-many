@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Models;
+use App\Models\User;
+use App\Models\Type;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Project extends Model
 {
@@ -21,5 +25,15 @@ class Project extends Model
 
     public function setSlugAttribute($value){
         $this->attributes['slug'] = Str::slug($value);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class);
     }
 }
