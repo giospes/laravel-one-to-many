@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Project;
+use App\Models\Type;
 use Doctrine\DBAL\Schema\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -20,7 +22,12 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(4);
+        if(Auth::user()->is_admin){
+            $projects =  Project::paginate(3);
+        }
+        else{
+            $projects = Project::where('user_id', Auth::id())->paginate(4);
+        }
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -31,7 +38,8 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $types = Type::all();
+        return view('admin.projects.create', compact('types'));
     }
 
     /**
@@ -50,6 +58,7 @@ class ProjectsController extends Controller
         $project->name = $request->name;
         $project->description = $request->description;
         $project->user_id = $userId;
+        $project->type_id = $request->type_id;
         $project->save();
         return redirect()->route('admin.projects.show', $project->slug);
     }
@@ -62,7 +71,10 @@ class ProjectsController extends Controller
      */
     public function show($slug)
     {
-        $project = Project::where('slug', $slug)->firstOrFail();
+        $project = Project::where('slug', $slug)->firstOrFail(); 
+        if (!Auth::user()->is_admin && $project->user_id !== Auth::id()) {
+            abort(403);
+        }
         return view('admin.projects.show', compact('project'));
     }
 
@@ -75,7 +87,11 @@ class ProjectsController extends Controller
     public function edit($slug)
     {
         $project = Project::where('slug', $slug)->firstOrFail();
-        return view('admin.projects.edit', compact('project'));
+        if (!Auth::user()->is_admin && $project->user_id !== Auth::id()){
+            abort(403);
+        }
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**

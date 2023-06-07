@@ -13,7 +13,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'created_at', 'updated_at', 'user_id', 'slug'];
+    protected $fillable = ['name', 'description', 'created_at', 'updated_at', 'user_id', 'slug', 'type_id'];
 
     public function photos(){
         return $this->hasMany(Photo::class);
@@ -36,4 +36,6 @@ class Project extends Model
     {
         return $this->belongsTo(Type::class);
     }
+
+    
 }
