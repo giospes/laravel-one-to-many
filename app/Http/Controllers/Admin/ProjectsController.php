@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Requests\StoreProjectRequest;
 use App\Models\Project;
+use Doctrine\DBAL\Schema\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 class ProjectsController extends Controller
 {
@@ -36,9 +40,18 @@ class ProjectsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
-        //
+        $userId = auth()->id();
+        $data = $request->validated();
+        $slug = Str::slug($request->name, '-');
+        $project = new Project();
+        $project -> slug = $slug;
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->user_id = $userId;
+        $project->save();
+        return redirect()->route('admin.projects.show', $project->slug);
     }
 
     /**
@@ -59,8 +72,9 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($slug, Project $project)
+    public function edit($slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
         return view('admin.projects.edit', compact('project'));
     }
 
@@ -71,9 +85,14 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        
+       
+        $data = $request->validated();
+        $slug = Str::slug($request->name, '-');
+        $data['slug'] = $slug;
+        $project->update($data);
+
         return redirect()->route('admin.projects.index')->with('success', 'Project updated correctly');
     }
 
