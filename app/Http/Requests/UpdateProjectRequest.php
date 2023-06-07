@@ -20,7 +20,7 @@ class UpdateProjectRequest extends FormRequest
             'name' => [
                 'required', 
                 'max:255' , 
-                Rule::unique('posts')->ignore($this->post)
+                Rule::unique('projects')->ignore($this->project)
             ],
             'description' => 'required|min:100',
             
