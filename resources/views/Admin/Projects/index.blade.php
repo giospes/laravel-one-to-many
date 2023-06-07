@@ -9,7 +9,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>User ID</th>
+                    <th>User ID\Name</th>
                     <th>Created at</th>
                     <th>Updated at</th>
                 </tr>
@@ -24,9 +24,11 @@
                                 </td>
                                 <td>{{ $project->name }}</td>
                                 <td>{{ $project->description }}</td>
-                                <td>{{ $project->user_id }}</td>
+                                <td>{{ $project->user_id}}\{{ $project->user->name }} </td>
                                 <td>{{ $project->created_at }}</td>
                                 <td>{{ $project->updated_at }}</td>
+                               
+
                         </tr>
                 
                 @endforeach
