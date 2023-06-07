@@ -17,7 +17,11 @@ class UpdateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
+            'name' => [
+                'required', 
+                'max:255' , 
+                Rule::unique('posts')->ignore($this->post)
+            ],
             'description' => 'required|min:100',
             
         ];
